@@ -28,7 +28,7 @@ export class AuthService {
 	}
 
 	// Generate Token
-	public async generateAccessToken(_id: string, role: string): Promise<string> {
+	public async generateAccessToken(_id: string): Promise<string> {
 		const payload = { _id };
 		return this.jwtService.sign(payload, { expiresIn: '30d' });
 	}

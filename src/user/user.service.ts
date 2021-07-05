@@ -29,5 +29,10 @@ export class UserService {
 
 		const user = await this.userModel.create(userData);
 		return user;
+    }
+    
+    public async getUserByEmail(email: String): Promise<UsersDTO> {
+		const user = await this.userModel.findOne({ email: email });
+		return user;
 	}
 }

@@ -3,7 +3,7 @@ import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { AuthService } from '../utils/auth.service';
 import { UtilService } from '../utils/util.service';
-import { UserCreateDTO } from './user.model';
+import { UserCreateDTO, ResponseLogin, LoginDTO } from './user.model';
 import { ResponseSuccessMessage, ResponseBadRequestMessage, ResponseErrorMessage, CommonResponseModel, ResponseMessage } from '../utils/app.model';
 
 @Controller('users')
@@ -41,5 +41,27 @@ public async registerNewUser(@Body() userData: UserCreateDTO): Promise<CommonRes
         this.utilService.errorResponse(e);
     }
 }
+
+@Post('/login')
+	@ApiOperation({ title: 'Log in user' })
+	@ApiResponse({ status: 200, description: 'Return user info', type: ResponseLogin })
+	@ApiResponse({ status: 400, description: 'Bad request message', type: ResponseBadRequestMessage })
+	@ApiResponse({ status: 404, description: 'Unauthorized or Not found', type: ResponseErrorMessage })
+	public async validateUser(@Body() credential: LoginDTO): Promise<CommonResponseModel> {
+		try {
+			const user = await this.userService.getUserByEmail(credential.email);
+			if (!user) this.utilService.badRequest(ResponseMessage.USER_EMAIL_NOT_FOUND);
+
+			if (!user.status) this.utilService.badRequest(ResponseMessage.USER_ACCOUNT_BLOCKED);
+
+			const isValid = await this.authService.verifyPassword(credential.password, user.password);
+			if (!isValid) this.utilService.badRequest(ResponseMessage.USER_EMAIL_OR_PASSWORD_INVALID);
+
+			const token = await this.authService.generateAccessToken(user._id);
+			return this.utilService.successResponseData({ token: token, id: user._id});
+		} catch (e) {
+			this.utilService.errorResponse(e);
+		}
+	}
 
 }

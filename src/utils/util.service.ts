@@ -50,5 +50,12 @@ export class UtilService {
 		//   throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 		//return await this.res(HttpStatus.INTERNAL_SERVER_ERROR, "", key);
 		//console.log(e.kind);
+    }
+    
+    public async successResponseData(responseData, extra?) {
+		if (!extra) return await this.res(HttpStatus.OK, responseData);
+		let res = await this.res(HttpStatus.OK, responseData);
+		for (var key in extra) res[key] = extra[key];
+		return res;
 	}
 }
