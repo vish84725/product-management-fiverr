@@ -34,7 +34,8 @@ export class ProductController {
               return this.utilService.successResponseData(product.data);
 
           } catch (e) {
-              this.utilService.errorResponse(e);
+              throw e;
+              //this.utilService.errorResponse(e);
           }
       }
 }

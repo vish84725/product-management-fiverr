@@ -38,7 +38,8 @@ public async registerNewUser(@Body() userData: UserCreateDTO): Promise<CommonRes
         }
         else this.utilService.badRequest(ResponseMessage.SOMETHING_WENT_WRONG);
     } catch (e) {
-        this.utilService.errorResponse(e);
+        throw e;
+        //this.utilService.errorResponse(e);
     }
 }
 
@@ -60,7 +61,8 @@ public async registerNewUser(@Body() userData: UserCreateDTO): Promise<CommonRes
 			const token = await this.authService.generateAccessToken(user._id);
 			return this.utilService.successResponseData({ token: token, id: user._id});
 		} catch (e) {
-			this.utilService.errorResponse(e);
+            throw e;
+			//this.utilService.errorResponse(e);
 		}
 	}
 

@@ -35,18 +35,19 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
 		}
 
 		if (exception.status === HttpStatus.BAD_REQUEST) {
-			if (message && message.message) {
-				const msg = message.message;
-				if (Array.isArray(msg)) {
-					for (var i = 0, l = msg.length; i < l; i++) {
-						if (msg[i] && msg[i].constraints) {
-							errors = errors.concat(Object.values(msg[i].constraints));
-						} else {
-							errors = errors.concat(msg[i]);
-						}
-					}
-				} else errors.push(msg);
-			}
+			errors.push(message);
+			// if (message && message.message) {
+			// 	const msg = message.message;
+			// 	if (Array.isArray(msg)) {
+			// 		for (var i = 0, l = msg.length; i < l; i++) {
+			// 			if (msg[i] && msg[i].constraints) {
+			// 				errors = errors.concat(Object.values(msg[i].constraints));
+			// 			} else {
+			// 				errors = errors.concat(msg[i]);
+			// 			}
+			// 		}
+			// 	} else errors.push(msg);
+			// }
 			status = HttpStatus.BAD_REQUEST;
 		}
 
