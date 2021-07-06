@@ -6,6 +6,9 @@ import { UserModule } from './user/user.module';
 import * as dotenv from 'dotenv';
 import { UtilService } from './utils/util.service';
 import { JwtModule } from '@nestjs/jwt';
+import { ProductModule } from './product/product.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './utils/jwt.strategy';
 dotenv.config();
 
 @Global()
@@ -19,16 +22,23 @@ dotenv.config();
       useUnifiedTopology: true
     }),
   }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({ secret: process.env.SECRET, signOptions: { expiresIn: '3h' } }),
-    UserModule,],
+    UserModule,
+    ProductModule,],
   controllers: [AppController],
   providers: [
     AppService,
-    UtilService],
+    UtilService,
+    JwtStrategy
+  ],
   exports : [
     MongooseModule,
     UserModule,
     JwtModule,
-    UtilService]
+    PassportModule,
+    JwtStrategy,
+    UtilService
+  ]
 })
 export class AppModule {}

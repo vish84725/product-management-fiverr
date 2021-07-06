@@ -34,5 +34,10 @@ export class UserService {
     public async getUserByEmail(email: String): Promise<UsersDTO> {
 		const user = await this.userModel.findOne({ email: email });
 		return user;
+    }
+    
+    public async getUserById(userId: String): Promise<UsersDTO> {
+		const user = await this.userModel.findById(userId);
+		return user;
 	}
 }

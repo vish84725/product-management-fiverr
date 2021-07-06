@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, HttpStatus, NotFoundException } from "@nestjs/common";
+import { Injectable, BadRequestException, HttpStatus, NotFoundException, UnauthorizedException } from "@nestjs/common";
 
 @Injectable()
 export class UtilService {
@@ -57,5 +57,10 @@ export class UtilService {
 		let res = await this.res(HttpStatus.OK, responseData);
 		for (var key in extra) res[key] = extra[key];
 		return res;
-	}
+    }
+    
+    public unauthorized() {
+		const msg = 'UNAUTHORIZED';
+		throw new UnauthorizedException(msg);
+    }
 }
