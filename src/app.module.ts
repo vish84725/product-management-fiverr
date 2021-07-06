@@ -9,6 +9,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { ProductModule } from './product/product.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './utils/jwt.strategy';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { RequestInterceptor } from './request.interceptor';
+import { AllExceptionsFilter } from './exceptions.filter';
 dotenv.config();
 
 @Global()
@@ -30,7 +33,15 @@ dotenv.config();
   providers: [
     AppService,
     UtilService,
-    JwtStrategy
+    JwtStrategy,
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: RequestInterceptor
+		},
+		{
+			provide: APP_FILTER,
+			useClass: AllExceptionsFilter,
+		}
   ],
   exports : [
     MongooseModule,
