@@ -7,6 +7,7 @@ import { ResponseBadRequestMessage, ResponseErrorMessage, ResponseMessage } from
 import { OptionalJwtAuthGuard, GetUser } from '../utils/jwt.strategy';
 import { UsersDTO } from '../user/user.model';
 import { ProductQuery } from './product.model';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('product')
 @ApiUseTags('Product')
@@ -22,8 +23,8 @@ export class ProductController {
       @ApiResponse({ status: 200, description: 'Return details of product' })
       @ApiResponse({ status: 400, description: 'Bad request message', type: ResponseBadRequestMessage })
       @ApiResponse({ status: 404, description: 'Unauthorized or Not found', type: ResponseErrorMessage })
-    //   @UseGuards(OptionalJwtAuthGuard)
-    //   @ApiBearerAuth()
+      @UseGuards(AuthGuard('jwt'))
+      @ApiBearerAuth()
       public async searchProduct(@GetUser() user: UsersDTO,@Query() productQuery: ProductQuery) {
           try {
               if(!productQuery.barcode){
