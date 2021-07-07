@@ -102,6 +102,29 @@ export class UserCreateDTO {
 	salt: string;
 }
 
+export class UserUpdateDTO {
+	@IsString()
+	@ApiModelProperty()
+	@IsNotEmpty()
+	email: string;
+	
+	@IsString()
+	@ApiModelProperty()
+	@IsNotEmpty()
+	firstName: string;
+
+	@IsString()
+	@ApiModelProperty()
+	@IsNotEmpty()
+	lastName: string;
+
+	@IsString()
+	@ApiModelProperty()
+	mobileNumber: string;
+
+	salt: string;
+}
+
 export class LoginDTO {
 	@ApiModelProperty()
 	@IsNotEmpty()
